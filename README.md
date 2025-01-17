@@ -46,8 +46,18 @@ The latest version of OpenWRT that I could find was compiled by wopo at [GitHub]
 - Only added `luci-app-sqm` to keep the build as close to the official release as possible.
 - Added all extra themes of LuCI (e.g., Argon theme, LuCI Legacy theme). To switch to the default theme of LuCI (if desired), log into LuCI -> System -> Language and Style -> choose your desired theme.
 
+### 23.05.4 & 23.05.5
+**Changelog:**
+- Used the same `config.buildinfo` and `feeds.buildinfo` as found at [OpenWRT 23.05.4 & 23.05.5 respectively](https://downloads.openwrt.org/releases/23.05.5/targets/ramips/mt7621/), so this build too should be identical to the official one.
+- Only added `luci-app-sqm` to keep the build as close to the official release as possible.
+- Added all themes of LuCI (LuCI Legacy theme). To switch to the default theme of LuCI (if desired), log into LuCI -> System -> Language and Style -> choose your desired theme.
+
+
+### About my build script
 I have also posted my `build.sh`. Although imperfect, you may use it to compile your own builds (note that the script isn't well tested). Additionally, I have posted `fix-pfring.sh` that patches the PF_RING compile bug for 23.05.3, as per this [thread](https://github.com/openwrt/packages/issues/23621). After updating and installing feeds, execute the `fix-pfring.sh`.
 
+
+### How do you add Zbit flash patch?
 I have also posted the actual Zbit patch: `001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch`, which should add Zbit support for Totolink X5000R. Just copy-paste this patch into the following directory:
 ```plaintext
 openwrt/target/ramips/patches-5.15/
