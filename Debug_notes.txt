@@ -1,0 +1,60 @@
+# Use diff command to generate a patch
+diff -u original.c modified.c > ring_bind_modification.patch
+
+# Use debug compile function in build.sh to get a more detailed overview of the build process, if a certain package compile fails, then:
+
+# To compile a specific package
+make package/feeds/packages/libpfring/compile V=s
+
+Warnings, errors and tracing
+The parameter V=x specifies level of messages in the process of the build.
+
+    V=99 and V=1 are now deprecated in favor of a new verbosity class system,
+    though the old flags are still supported.
+    You can set the V variable on the command line (or OPENWRT_VERBOSE in the
+    environment) to one or more of the following characters:
+    
+    - s: stdout+stderr (equal to the old V=99)
+    - c: commands (for build systems that suppress commands by default, e.g. kbuild, cmake)
+    - w: warnings/errors only (equal to the old V=1)
+source: https://dev.openwrt.org/changeset/31484
+
+old options:
+
+1 - print a messages containing the working directory before and after other processing.
+99 - trace of the build, ordinary messages yellow, error messages red, debug - black;
+Examples:
+
+make V=sc
+make V=sw
+
+
+Make sequence
+Top command make world calls the following sequence of the commands:
+make target/compile
+make package/cleanup
+make package/compile
+make package/install
+make package/preconfig
+make target/install
+make package/index
+
+You may run each command independently. For example, if the process of compilation of packages stops on error, you may fix the problem and next continue without cleanup:
+make package/compile
+make package/install
+make package/preconfig
+make target/install
+make package/index
+
+
+---------------------------------------------------------
+prpl Mesh -----------------------------------------
+
+openwrt/feeds/feeds_prpl/network/plugins/pcm-manager/Makefile
+---> add "TARGET_CFLAGS += -Wno-deprecated-declarations" after first include line
+
+
+# To start and record UART logs
+script '/home/akm/TTTL_Logs/PL2303.log' 
+screen /dev/ttyUSB0 115200
+exit
