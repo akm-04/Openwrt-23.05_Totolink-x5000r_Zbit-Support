@@ -58,7 +58,8 @@ I have also posted my `build.sh`. Although imperfect, you may use it to compile 
 
 
 ### How do you add Zbit flash patch?
-I have also posted the actual Zbit patch: `001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch`, which should add Zbit support for Totolink X5000R. Just copy-paste this patch into the following directory:
+I have also posted the actual Zbit patch: `001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch`, which should add Zbit support for Totolink X5000R (for Openwrt 22.03 and 23.05 only).Use `412-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch` for openwrt 24.10 [Got this patch from here and can confirm it works and boots fine](https://github.com/openwrt/openwrt/issues/12306#issuecomment-2587304856)
+Just copy-paste this patch into the following directory:
 ```plaintext
 openwrt/target/ramips/patches-5.15/
 example like : /home/akm/Git/Git_Cloned/Official/openwrt/target/linux/ramips/patches-5.15/001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch
