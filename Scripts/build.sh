@@ -13,7 +13,7 @@ NC='\033[0m'        # Reset color
 # Define variables
 REPO_URL="https://git.openwrt.org/openwrt/openwrt.git"
 TARGET="ramips/mt7621"
-RELEASE="24.10.1"  # Update to the desired release version
+RELEASE="24.10.3"  # Update to the desired release version
 CONFIG_URL="https://downloads.openwrt.org/releases/$RELEASE/targets/$TARGET/config.buildinfo"
 FEEDS_URL="https://downloads.openwrt.org/releases/$RELEASE/targets/$TARGET/feeds.buildinfo"
 
@@ -116,6 +116,7 @@ echo -e "${YELLOW}Now Installing feeds${NC}"
 
 log_section "Downloading and applying config.buildinfo for stable releases"
 wget $CONFIG_URL -O .config || { echo -e "${RED}Failed to download config.buildinfo${NC}"; exit 1; }
+read -p "Press Enter to continue..."
 
 #read -p "Add Zbit.patch to appripiate directory and then Press Enter to continue..."
 
@@ -123,6 +124,6 @@ log_section "Configuring menuconfig, please select appropiate target (Target Pro
 make menuconfig || { echo -e "${RED}Failed to run menuconfig${NC}"; exit 1; }
 
 log_section "Starting Full Compile ..."
-#debug_compile
-make V=w -j$(nproc) download world 2>&1 | tee ../build.log || { echo -e "${RED}Failed during full build process, run in debug mode for more info${NC}"; exit 1; }
+debug_compile
+#make V=w -j$(nproc) download world 2>&1 | tee ../build.log || { echo -e "${RED}Failed during full build process, run in debug mode for more info${NC}"; exit 1; }
 
