@@ -454,16 +454,47 @@ Additionally I've uploaded the stock firmware for Totolink X5000r into the "stoc
 
 ---
 
-## Build Scripts and Patches
+---
+## Compiling Openwrt from source by yourself.
 
-### About my build script
-I have also posted my `build.sh`. Although imperfect, you may use it to compile your own builds (note that the script isn't well tested). Additionally, I have posted `fix-pfring.sh` that patches the PF_RING compile bug for 23.05.3, as per this [thread](https://github.com/openwrt/packages/issues/23621). After updating and installing feeds, execute the `fix-pfring.sh`.
+### 1. To compile Openwrt from the source start by cloning the openwrt repo using git.
 
+```bash
+git clone https://github.com/openwrt/openwrt.git
+```
+### 2. Get my build script
 
-### How do you add Zbit flash patch?
+#### About my build script
+I have also posted my `build.sh`. Although imperfect, you may use it to compile your own builds (note that the script isn't well tested). Additionally, I have posted `fix-pfring.sh` that patches the PF_RING compile bug for 23.05.3, as per this [thread](https://github.com/openwrt/packages/issues/23621). After updating and installing feeds, execute the `fix-pfring.sh` (Note this is only required when compiling openwrt version 23.05.3, for other versions no need to execute fix-pfring.sh).
+
+Either clone this repo or copy the build.sh from this repo into your workspace. Example (clone my repo):
+```bash
+git clone https://github.com/akm-04/Openwrt-23.05_Totolink-x5000r_Zbit-Support.git
+```
+
+Place build.sh in your workspace next to the openwrt/ directory, e.g.:
+```bash
+<workspace>/
+├── openwrt/                   ← Clonned openwrt repo
+├── build.sh                   ← My build script copied here
+```
+Make the script executable:
+```bash
+chmod +x build.sh
+```
+Next edit my build script and select which version of openwrt you wish to compile. edit this variable as needed to select which version of openwrt to compile. then save it.
+```bash
+RELEASE="24.10.3"  # Update to the desired release version
+```
+
+### 3. (Important) Add Zbit flash patch
+Next copy zbit flash patch to correct folder -- this is required to add zbit drivers for Totolink X5000r with flash chip #ZB25VQ128ASIG (THIS IS IMPORTANT, if not done the compiled firmware wont have drivers for zbit flash chip which will lead to bootloop when flashed)
+
+#### How do you add Zbit flash patch?
 I have also posted the actual Zbit patch: `001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch`, which should add Zbit support for Totolink X5000R (for Openwrt 22.03 and 23.05 only). Use `412-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch` for openwrt 24.10 [Got this patch from here and can confirm it works and boots fine](https://github.com/openwrt/openwrt/issues/12306#issuecomment-2587304856)
+All patches are posted in this repo inside the Zbit-Patches folder
 Just copy-paste this patch into the following directory:
-```plaintext
+```bash
 for openwrt 22.03
 openwrt/target/linux/ramips/patches-5.10/001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch
 
@@ -474,3 +505,24 @@ for openwrt 24.10:
 openwrt/target/linux/ramips/patches-6.6/412-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch
 
 example like : /home/akm/Git/Git_Cloned/Official/openwrt/target/linux/ramips/patches-5.15/001-mtd-spi-nor-add-support-for-zbit-zb25vq128.patch
+```
+### 4. Run the build script
+when ready to compile
+```bash
+./build.sh
+```
+when the script temporarily stops to configure menuconfig, select Target Profile -> TOTOLINK X5000r, then save it and exit. The compiling should continue.
+
+If everything goes fine, the final firmware for Totolink-X5000R should be produced in 
+```bash
+/bin/targets/ramips/mt7621/
+
+```
+### (optional) Clean commands for rebuilding for another OpenWrt version
+If you wish to compile a different version of openwrt (dirty build), make sure to clean the openwrt repo first.
+```bash
+cd openwrt
+make clean         # for slight cleanup
+make distclean     # for full cleanup
+```
+---
